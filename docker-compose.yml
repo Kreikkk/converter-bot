@@ -1,0 +1,40 @@
+version: '3.7'
+
+services: 
+  app:
+    build: .
+    command: >
+      sh -c "python ./await.py
+      && alembic -c ./db/alembic.ini upgrade heads
+      && python ./main.py"
+    volumes: 
+      - .:/app
+    ports: 
+      - 8000:8000
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      BOT_TOKEN: ${BOT_TOKEN}
+      LOG_SQL: ${LOG_SQL}
+    depends_on:
+      - db
+    container_name: bot_app_container
+
+  db:
+    image: postgres:12-alpine
+    volumes: 
+      # - ./data/db:/var/lib/postgresql/data/
+      - postgres-db:/var/lib/postgresql/data/
+    ports:
+      - 15432:5432
+    environment: 
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    container_name: bot_db_container
+
+volumes:
+  postgres-db:

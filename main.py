@@ -1,13 +1,9 @@
-import logging
-
-import handlers
+from app import handlers
 
 from aiogram import executor, Bot, Dispatcher
 
 from settings import BOT_TOKEN
 
-
-logging.basicConfig(level=logging.DEBUG)
 
 bot = Bot(token=BOT_TOKEN)
 dispatcher = Dispatcher(bot)
