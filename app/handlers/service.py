@@ -8,18 +8,15 @@ from db.models.users import User
 
 async def handle_service(update_message: types.ChatMemberUpdated):
     ser = ServiceMessageSerializer(**dict(update_message))
+    chat_id = ser.chat.chat_id
 
     async with Connector().connect() as conn:
-        user = await conn.execute(select(User).where(User.c.chat_id==ser.chat.chat_id))
-        user = user.fetchone()
+        user = (await User.filter(conn, User.chat_id==chat_id)).fetchone()
 
         if not user:
-            await conn.execute(insert(User).values(
-                **ser.chat.dict(), 
-                active=ser.status==ServiceMessageStatuses.member
-            ))
+            await User.create(conn, **ser.chat.dict(), active=ser.status==ServiceMessageStatuses.member)
         else:
-            update_query = update(User).where(User.c.chat_id==ser.chat.chat_id)
+            update_query = User.update_pre(User.chat_id==chat_id)
 
             if ser.status == ServiceMessageStatuses.member and not user.active:
                 await conn.execute(update_query.values(active=True))

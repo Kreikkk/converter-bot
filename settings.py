@@ -1,11 +1,9 @@
 import logging
 
 from environs import Env
-from sqlalchemy import MetaData
 
 logging.basicConfig(level=logging.INFO)
 
-metadata = MetaData()
 
 env = Env()
 env.read_env()
