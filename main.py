@@ -10,7 +10,8 @@ dispatcher = Dispatcher(bot)
 
 
 if __name__ == '__main__':
-    dispatcher.register_message_handler(handlers.handle_start, commands=["start", "help"])
+    dispatcher.register_message_handler(handlers.handle_start, commands=['start',])
     dispatcher.register_message_handler(handlers.echo)
+    dispatcher.register_my_chat_member_handler(handlers.handle_service)
 
-    executor.start_polling(dispatcher, skip_updates=True)
+    executor.start_polling(dispatcher, allowed_updates=['new_chat_members'])
