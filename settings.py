@@ -3,7 +3,7 @@ import logging
 from environs import Env
 from sqlalchemy import MetaData
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 metadata = MetaData()
 
