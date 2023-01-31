@@ -8,10 +8,10 @@ from db.models.users import User
 
 async def echo(message: types.Message):
     ser = MessageSerializer(**dict(message))
+    chat_id = ser.chat.chat_id
 
     async with Connector().connect() as conn:
-        user = await conn.execute(select(User).where(User.c.chat_id==ser.chat.chat_id))
-        user = user.fetchone()
+        user = (await User.filter(conn, User.chat_id==chat_id)).fetchone()
 
     if not user:
         await message.answer(f'You are not registered yet, please restart the bot')

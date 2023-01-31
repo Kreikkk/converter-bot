@@ -1,20 +1,20 @@
 from datetime import datetime
-from sqlalchemy import Table, Column, Integer, String, DateTime, Boolean
-
-from settings import metadata
+from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from .base import BaseModel
 
 
 def now():
     return datetime.now()
 
 
-User = Table(
-    'users', metadata,
-    Column('chat_id',Integer, primary_key=True),
-    Column('username', String, unique=True),
-    Column('first_name', String),
-    Column('last_name', String),
-    Column('language_code', String),
-    Column('created_at', DateTime(timezone=True), default=now),
-    Column('active', Boolean, default=True)
-)
+class User(BaseModel):
+    __tablename__ = 'users'
+
+    chat_id = Column(Integer, primary_key=True)
+    username = Column(String)
+    first_name = Column(String)
+    last_name = Column(String)
+    language_code = Column(String)
+    created_at = Column(DateTime(timezone=True), default=now)
+    active = Column(Boolean, default=True)
+

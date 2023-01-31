@@ -14,4 +14,4 @@ if __name__ == '__main__':
     dispatcher.register_message_handler(handlers.echo)
     dispatcher.register_my_chat_member_handler(handlers.handle_service)
 
-    executor.start_polling(dispatcher, allowed_updates=['new_chat_members'])
+    executor.start_polling(dispatcher)
